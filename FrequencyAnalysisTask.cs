@@ -7,7 +7,8 @@ namespace TextAnalysis
     {
         public static Dictionary<string, string> GetMostFrequentNextWords(List<List<string>> text)
         {
-            Dictionary<string, string> n_gramDict = new Dictionary<string, string>();
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            List<KeyValuePair<string, string>> listKeyValuePair = new List<KeyValuePair<string, string>>();
             List<string> x2grams = new List<string>();
             if (text.Count > 0)
             {
@@ -17,8 +18,10 @@ namespace TextAnalysis
                     x2grams.AddRange(x2gramsTemp);
                 }
                 x2grams.Sort();
+                for (int i = 0; i < x2grams.Count; i++)
+                    listKeyValuePair.Add(new KeyValuePair<string, string>(x2grams[i].Split()[0], x2grams[i].Split()[1]));
             }
-            return n_gramDict;
+            return result;
         }
 
         private static List<string> Get2grams(List<string> list)
