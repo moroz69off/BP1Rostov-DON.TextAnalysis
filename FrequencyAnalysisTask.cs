@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-
+// Условие для пары key-value: 
+// Одинаковые начала есть, но этих концов больше. 
+// Или: одинаковые начала есть, и концов одинаково, но конец меньше в строю. 
+// Или: таких начал больше нет.
 namespace TextAnalysis
 {
     public class Frequency
@@ -9,19 +12,49 @@ namespace TextAnalysis
         public int count;
         public bool isResult;
 
-        public Frequency(string start, string and, int count)
-        {
-            this.start = start;
-            this.and = and;
-            this.count = count;
-        }// Не знаю, нужен ли этот конструктор?
 
-        public KeyValuePair<string, string> FrequencyElement(string start)
-        {
-            KeyValuePair<string, string> kvp = new KeyValuePair<string, string>();
-            return kvp;
-        }
     }
+
+    static class FrequencyAnalysisTask
+    {
+        public static Dictionary<string, string> GetMostFrequentNextWords(List<List<string>> text)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+			Dictionary<string, int> frequence = new Dictionary<string, int>();
+			List<string> listGramas = GetGramas(text);
+
+			foreach (var item in listGramas)
+			{
+				if (!frequence.ContainsKey(item))
+					frequence.Add(item, 1);
+				else
+					frequence[item]++;
+			}
+			string[] str = new string[frequence.Count];
+			frequence.Keys.CopyTo(str, 0);
+			int[] n = new int[frequence.Count];
+			frequence.Values.CopyTo(n, 0);
+
+			Frequency[] frs = new Frequency[frequence.Count];
+			for (int i = 0; i < frs.Length; i++)
+			{
+					frs[i] = new Frequency();
+					frs[i].start = str[i].Substring(str[i].LastIndexOf(" "));
+					frs[i].and = str[i].Substring(0, str[i].LastIndexOf(" "));
+					frs[i].count = n[i];
+			}
+
+//-----------------------------------------------------------
+
+			//string[] s = new string[frs.Length];
+			//for (int i = 0; i < frs.Length; i++)
+			//	s[i] = str[i] + " \t " + n[i].ToString();
+			//System.IO.File.WriteAllLines("ffff.txt", s);
+			
+//-----------------------------------------------------------
+			
+			return result;
+        }
 
     static class FrequencyAnalysisTask
     {
