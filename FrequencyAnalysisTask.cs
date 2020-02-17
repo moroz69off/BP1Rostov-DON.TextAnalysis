@@ -3,33 +3,16 @@ using System.Collections.Generic;
 
 namespace TextAnalysis
 {
-    public class Frequency
-    {
-        public string start, and;
-        public int count;
-        public bool isResult;
-
-        public Frequency(string start, string and, int count)
-        {
-            this.start = start;
-            this.and = and;
-            this.count = count;
-        }// Не знаю, нужен ли этот конструктор?
-
-        public KeyValuePair<string, string> FrequencyElement(string start)
-        {
-            KeyValuePair<string, string> kvp = new KeyValuePair<string, string>();
-            return kvp;
-        }
-    }
-
-    static class FrequencyAnalysisTask
+    internal static class FrequencyAnalysisTask
     {
         public static Dictionary<string, string> GetMostFrequentNextWords(List<List<string>> text)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
+
             Dictionary<string, int> frequency = new Dictionary<string, int>();
+
             List<string> allx2gramas = new List<string>(Get2gramas(text));
+
             foreach (var item in allx2gramas)
             {
                 if (!frequency.ContainsKey(item))
@@ -37,7 +20,9 @@ namespace TextAnalysis
                 else
                     frequency[item]++;
             }
+
             List<string> allx3gramas = new List<string>(Get3gramas(text));
+
             foreach (var item in allx3gramas)
             {
                 if (!frequency.ContainsKey(item))
@@ -45,6 +30,7 @@ namespace TextAnalysis
                 else
                     frequency[item]++;
             }
+
             for (int i = 0; i < frequency.Count; i++)
             {
 
@@ -63,20 +49,25 @@ namespace TextAnalysis
                         + item[i + 1] + " "
                         + item[i + 2]);
             }
+
             result.Sort();
+
             return result;
         }
 
         private static List<string> Get2gramas(List<List<string>> text)
         {
             List<string> result = new List<string>();
+
             foreach (var item in text)
             {
                 for (int i = 0; i < item.Count - 1; i++)
                     result.Add(item[i] + " "
                         + item[i + 1]);
             }
+
             result.Sort();
+
             return result;
         }
     }
