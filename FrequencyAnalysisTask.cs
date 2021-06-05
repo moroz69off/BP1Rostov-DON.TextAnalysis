@@ -3,35 +3,72 @@ using System.Collections.Generic;
 
 namespace TextAnalysis
 {
-    static class FrequencyAnalysisTask
+    internal static class FrequencyAnalysisTask
     {
         public static Dictionary<string, string> GetMostFrequentNextWords(List<List<string>> text)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
-            List<KeyValuePair<string, string>> listKeyValuePair = new List<KeyValuePair<string, string>>();
-            List<string> x2grams = new List<string>();
-            if (text.Count > 0)
+
+            Dictionary<string, int> frequency = new Dictionary<string, int>();
+
+            List<string> allx2gramas = new List<string>(Get2gramas(text));
+
+            foreach (var item in allx2gramas)
             {
-                for (int i = 0; i < text.Count; i++)
-                {
-                    List<string> x2gramsTemp = Get2grams(text[i]);
-                    x2grams.AddRange(x2gramsTemp);
-                }
-                x2grams.Sort();
-                for (int i = 0; i < x2grams.Count; i++)
-                    listKeyValuePair.Add(new KeyValuePair<string, string>(x2grams[i].Split()[0], x2grams[i].Split()[1]));
+                if (!frequency.ContainsKey(item))
+                    frequency.Add(item, 1);
+                else
+                    frequency[item]++;
             }
+
+            List<string> allx3gramas = new List<string>(Get3gramas(text));
+
+            foreach (var item in allx3gramas)
+            {
+                if (!frequency.ContainsKey(item))
+                    frequency.Add(item, 1);
+                else
+                    frequency[item]++;
+            }
+
+            for (int i = 0; i < frequency.Count; i++)
+            {
+
+            }
+
             return result;
         }
 
-        private static List<string> Get2grams(List<string> list)
+        private static List<string> Get3gramas(List<List<string>> text)
         {
-            List<string> x2gramsTemp = new List<string>();
-            for (int i = 0; i < list.Count - 1; i++)
+            List<string> result = new List<string>();
+            foreach (var item in text)
             {
-                x2gramsTemp.Add(list[i] + " " + list[i + 1]);
+                for (int i = 0; i < item.Count - 2; i++)
+                    result.Add(item[i] + " "
+                        + item[i + 1] + " "
+                        + item[i + 2]);
             }
-            return x2gramsTemp;
+
+            result.Sort();
+
+            return result;
+        }
+
+        private static List<string> Get2gramas(List<List<string>> text)
+        {
+            List<string> result = new List<string>();
+
+            foreach (var item in text)
+            {
+                for (int i = 0; i < item.Count - 1; i++)
+                    result.Add(item[i] + " "
+                        + item[i + 1]);
+            }
+
+            result.Sort();
+
+            return result;
         }
     }
 }
