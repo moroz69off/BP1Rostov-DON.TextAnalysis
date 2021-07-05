@@ -33,7 +33,10 @@ namespace TextAnalysis
 
             for (int i = 0; i < frequency.Count; i++)
             {
-                var FR = frequency;
+                if (true)
+                {
+                    
+                }
             }
 
             return result;
